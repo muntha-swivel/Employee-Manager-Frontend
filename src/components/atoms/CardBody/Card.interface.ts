@@ -1,8 +1,4 @@
-export interface IACard {
-  // image: string;
-  // name: string;
-  // email: string;
-  // phone: string;
-  // gender: string;
+import { IEmployee } from "shared";
+export interface IACard extends IEmployee {
   children: JSX.Element;
 }

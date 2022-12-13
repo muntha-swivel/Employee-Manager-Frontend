@@ -1,10 +1,25 @@
 import { CardBody, PictureButton } from "@atoms";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { IEmployee } from "shared";
 
-const ACard = () => {
+const ACard = ({
+  firstName,
+  lastName,
+  email,
+  phone,
+  gender,
+  image,
+}: IEmployee) => {
   return (
-    <CardBody>
+    <CardBody
+      firstName={firstName}
+      lastName={lastName}
+      email={email}
+      phone={phone}
+      gender={gender}
+      image={image}
+    >
       <>
         <PictureButton
           onClick={() => console.log("hello world")}

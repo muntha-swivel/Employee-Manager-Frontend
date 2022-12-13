@@ -1,17 +1,21 @@
 import * as React from "react";
 import {
-  CardActionArea,
   CardActions,
   Card,
   CardContent,
   CardMedia,
   Typography,
-  IconButton,
 } from "@mui/material";
 import { IACard } from "./Card.interface";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { PictureButton } from "@atoms";
-function CardBody({ children }: IACard) {
+function CardBody({
+  children,
+  image,
+  firstName,
+  lastName,
+  email,
+  phone,
+  gender,
+}: IACard) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -22,16 +26,16 @@ function CardBody({ children }: IACard) {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {firstName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          kathy@gmail.com
+          {email}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          +94779122123
+          {phone}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Female
+          {gender}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "right" }}>{children}</CardActions>
