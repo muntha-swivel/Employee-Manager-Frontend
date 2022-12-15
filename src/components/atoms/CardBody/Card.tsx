@@ -9,7 +9,7 @@ import {
 import { IACard } from "./Card.interface";
 function CardBody({
   children,
-  image,
+  photo,
   firstName,
   lastName,
   email,
@@ -17,11 +17,12 @@ function CardBody({
   gender,
 }: IACard) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 300, minWidth: 300 }}>
       <CardMedia
         component="img"
         height="300"
-        image="https://www.esafety.gov.au/sites/default/files/2019-08/Remove%20images%20and%20video.jpg"
+        width="250"
+        image={photo}
         alt="green iguana"
       />
       <CardContent>

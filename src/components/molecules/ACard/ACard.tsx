@@ -1,16 +1,17 @@
 import { CardBody, PictureButton } from "@atoms";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { IEmployee } from "shared";
-
+import { IACard } from "./ACard.interface";
 const ACard = ({
   firstName,
   lastName,
   email,
   phone,
   gender,
-  image,
-}: IEmployee) => {
+  photo,
+  onClickDelete,
+  onClickEdit,
+}: IACard) => {
   return (
     <CardBody
       firstName={firstName}
@@ -18,16 +19,16 @@ const ACard = ({
       email={email}
       phone={phone}
       gender={gender}
-      image={image}
+      photo={photo}
     >
       <>
         <PictureButton
-          onClick={() => console.log("hello world")}
+          onClick={onClickDelete}
           backgroundColor="secondary"
           icon={<DeleteIcon />}
         />
         <PictureButton
-          onClick={() => console.log("hello world")}
+          onClick={onClickEdit}
           backgroundColor="secondary"
           icon={<ManageAccountsIcon />}
         />

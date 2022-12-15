@@ -1,17 +1,50 @@
 import {
   Box,
-  Typography,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Button,
-  Grid,
-  Link,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@mui/material";
+import { useFormik } from "formik";
+import { UserSchema } from "validation";
+import { IForm } from "./Form.interface";
+import { addEmployee } from "./logic";
+import { useDispatch } from "react-redux";
 
-const Form = () => {
+const Form = ({ edit, employee }: IForm) => {
+  const dispatch = useDispatch();
+  let editForm: boolean = false;
+
+  if (edit === true && employee != null && employee != undefined) {
+    editForm = true;
+  }
+  const formik = useFormik({
+    initialValues: {
+      firstName: editForm ? employee?.firstName : "",
+      lastName: editForm ? employee.lastName : "",
+      email: editForm ? employee.email : "",
+      phone: editForm ? employee.phone : "",
+      gender: editForm ? employee.gender : "M",
+    },
+    validationSchema: UserSchema,
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      const emp = {
+        ...values,
+        photo:
+          "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWVufGVufDB8fDB8fA%3D%3D&w=1000&q=80",
+      };
+      addEmployee(emp, dispatch);
+    },
+  });
   return (
-    <Box component="form" noValidate sx={{ mt: 1 }}>
+    <Box
+      component="form"
+      noValidate
+      sx={{ mt: 1 }}
+      onSubmit={formik.handleSubmit}
+    >
       <TextField
         margin="normal"
         required
@@ -20,6 +53,10 @@ const Form = () => {
         label="First Name"
         name="firstName"
         autoComplete="firstNname"
+        value={formik.values.firstName}
+        onChange={formik.handleChange}
+        error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+        helperText={formik.touched.firstName && formik.errors.firstName}
         autoFocus
       />
       <TextField
@@ -30,7 +67,10 @@ const Form = () => {
         label="Last Name"
         name="lastName"
         autoComplete="lastName"
-        autoFocus
+        value={formik.values.lastName}
+        onChange={formik.handleChange}
+        error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+        helperText={formik.touched.lastName && formik.errors.lastName}
       />
       <TextField
         margin="normal"
@@ -40,18 +80,38 @@ const Form = () => {
         label="Email Address"
         name="email"
         autoComplete="email"
-        autoFocus
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
       />
       <TextField
         margin="normal"
         required
         fullWidth
-        name="password"
-        label="Password"
-        type="password"
+        name="phone"
+        label="Phone"
         id="password"
         autoComplete="current-password"
+        value={formik.values.phone}
+        onChange={formik.handleChange}
+        error={formik.touched.phone && Boolean(formik.errors.phone)}
+        helperText={formik.touched.phone && formik.errors.phone}
       />
+      <InputLabel id="demo-simple-select-label">Age</InputLabel>
+
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        name="gender"
+        value={formik.values.gender}
+        label="Age"
+        fullWidth
+        onChange={formik.handleChange}
+      >
+        <MenuItem value={"M"}>Male</MenuItem>
+        <MenuItem value={"F"}>Female</MenuItem>
+      </Select>
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Add Employee
