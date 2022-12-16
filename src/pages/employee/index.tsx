@@ -4,12 +4,11 @@ import { fetchEmployees, selectEmployee } from "../../app/store";
 import { useSelector } from "react-redux";
 import { Cards } from "@organisms";
 import { EmployeePageTemplate } from "components/templates";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Typography } from "@mui/material";
-
+import { AlertModal } from "@atoms";
 const Home: NextPage = () => {
   const content = useSelector(selectEmployee());
   console.log(content);
+  // return <AlertModal />;
 
   return <EmployeePageTemplate employees={content.employees} />;
 };

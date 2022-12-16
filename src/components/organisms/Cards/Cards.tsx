@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ACard } from "@molecules";
 import { ICards } from "./Cards.interface";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
+import { AlertModal } from "@atoms";
+import { PrimaryButton } from "@atoms";
+import { IEmployee } from "shared";
+import { useDispatch } from "react-redux";
+import { setEmployeeToDelete } from "app/store";
 
-const Cards = ({ data }: ICards) => {
+const Cards = ({ data, onClickDelete }: ICards) => {
   const router = useRouter();
+  const dispatch: any = useDispatch();
+
+  const onClickDeleteBtn = (employee: IEmployee) => {
+    dispatch(setEmployeeToDelete(employee));
+    onClickDelete();
+  };
 
   return (
     <>
@@ -19,7 +30,7 @@ const Cards = ({ data }: ICards) => {
               photo={data.photo}
               phone={data.phone}
               gender={data.gender}
-              onClickDelete={() => console.log("hello")}
+              onClickDelete={() => onClickDeleteBtn(data)}
               onClickEdit={() => router.push(`employee/edit/${data._id}`)}
             />
           </Grid>

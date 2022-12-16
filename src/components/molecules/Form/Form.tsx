@@ -9,7 +9,7 @@ import {
 import { useFormik } from "formik";
 import { UserSchema } from "validation";
 import { IForm } from "./Form.interface";
-import { addEmployee } from "./logic";
+import { addEmployee, updateExistingEmployee } from "./logic";
 import { useDispatch } from "react-redux";
 
 const Form = ({ edit, employee }: IForm) => {
@@ -21,6 +21,7 @@ const Form = ({ edit, employee }: IForm) => {
   }
   const formik = useFormik({
     initialValues: {
+      _id: editForm ? employee._id : "",
       firstName: editForm ? employee?.firstName : "",
       lastName: editForm ? employee.lastName : "",
       email: editForm ? employee.email : "",
@@ -30,12 +31,17 @@ const Form = ({ edit, employee }: IForm) => {
     validationSchema: UserSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      const emp = {
-        ...values,
-        photo:
-          "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bWVufGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-      };
-      addEmployee(emp, dispatch);
+      if (edit) {
+        updateExistingEmployee(values, dispatch);
+      } else {
+        delete values["_id"];
+        const emp = {
+          ...values,
+          photo:
+            "https://images.news18.com/ibnlive/uploads/2022/12/ranveer-singh.jpg",
+        };
+        addEmployee(emp, dispatch);
+      }
     },
   });
   return (
@@ -45,6 +51,24 @@ const Form = ({ edit, employee }: IForm) => {
       sx={{ mt: 1 }}
       onSubmit={formik.handleSubmit}
     >
+      {editForm ? (
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="empId"
+          label="Employee ID"
+          name="empId"
+          autoComplete="id"
+          value={formik.values._id}
+          onChange={formik.handleChange}
+          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+          helperText={formik.touched.firstName && formik.errors.firstName}
+          disabled
+        />
+      ) : (
+        <></>
+      )}
       <TextField
         margin="normal"
         required

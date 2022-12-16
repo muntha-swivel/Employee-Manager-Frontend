@@ -1,23 +1,35 @@
 import { axiosClient } from "../apiClient";
 import { IEmployee } from "shared";
 
-const data = {
-  firstName: "Macbook",
-  lastName: "ProBro",
-  email: "mac@gmail.com",
-  phone: "+94779122134",
-  gender: "M",
-};
+// const data = {
+//   firstName: "Macbook",
+//   lastName: "ProBro",
+//   email: "mac@gmail.com",
+//   phone: "+94779122134",
+//   gender: "M",
+// };
 
-const getEmployees = () => {
+const getEmployeesService = () => {
   return axiosClient.get("/");
 };
-const getEmployeeById = (id?: string) => {
+const getEmployeeByIdService = (id?: string) => {
   return axiosClient.get(`/getEmployee/${id}`);
 };
-const addEmployee = (employee: IEmployee) => {
+const addEmployeeService = (employee: IEmployee) => {
   return axiosClient.post("/", JSON.stringify(employee));
 };
-export { getEmployees, addEmployee, getEmployeeById };
+const updateUpdateEmployeeService = (employee: IEmployee) => {
+  return axiosClient.post("/update", JSON.stringify(employee));
+};
+const removeEmployeeService = (id: string) => {
+  return axiosClient.get(`/removeEmployee/${id}`);
+};
+export {
+  getEmployeesService,
+  addEmployeeService,
+  getEmployeeByIdService,
+  updateUpdateEmployeeService,
+  removeEmployeeService,
+};
 
-//router.get("/getEmployee/:id", getOneEmployeeController);
+//router.get("/removeEmployee/:id", removeEmployeeController);
