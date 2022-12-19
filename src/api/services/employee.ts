@@ -1,14 +1,6 @@
 import { axiosClient } from "../apiClient";
 import { IEmployee } from "shared";
 
-// const data = {
-//   firstName: "Macbook",
-//   lastName: "ProBro",
-//   email: "mac@gmail.com",
-//   phone: "+94779122134",
-//   gender: "M",
-// };
-
 const getEmployeesService = () => {
   return axiosClient.get("/");
 };
@@ -31,5 +23,3 @@ export {
   updateUpdateEmployeeService,
   removeEmployeeService,
 };
-
-//router.get("/removeEmployee/:id", removeEmployeeController);

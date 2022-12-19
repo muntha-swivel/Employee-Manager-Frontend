@@ -1,6 +1,6 @@
 import { IEmployee } from "shared";
 
-export interface ICards {
+export interface ICardView {
   data: IEmployee[];
   onClickDelete: () => void;
 }

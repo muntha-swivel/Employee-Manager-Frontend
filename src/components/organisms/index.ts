@@ -1,1 +1,2 @@
-export { Cards } from "./Cards/Cards";
+export { CardView } from "./CardView/CardView";
+export { TableView } from "./TableView/TableView";

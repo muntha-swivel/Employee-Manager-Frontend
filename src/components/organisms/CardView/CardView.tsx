@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { ACard } from "@molecules";
-import { ICards } from "./Cards.interface";
+import { ICardView } from "./CardView.interface";
 import Grid from "@mui/material/Grid";
 import { useRouter } from "next/router";
-import { AlertModal } from "@atoms";
-import { PrimaryButton } from "@atoms";
 import { IEmployee } from "shared";
 import { useDispatch } from "react-redux";
-import { setEmployeeToDelete } from "app/store";
+import { setDeleteUserWithBtn } from "../shared/setDeleteUser";
 
-const Cards = ({ data, onClickDelete }: ICards) => {
+const CardView = ({ data, onClickDelete }: ICardView) => {
   const router = useRouter();
   const dispatch: any = useDispatch();
 
   const onClickDeleteBtn = (employee: IEmployee) => {
-    dispatch(setEmployeeToDelete(employee));
-    onClickDelete();
+    setDeleteUserWithBtn(employee, dispatch);
+    onClickDelete(); // this is the function that triggers the modal to open
   };
 
   return (
@@ -40,4 +38,4 @@ const Cards = ({ data, onClickDelete }: ICards) => {
   );
 };
 
-export { Cards };
+export { CardView };

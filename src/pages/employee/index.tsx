@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import { wrapper } from "app/store";
 import { fetchEmployees, selectEmployee } from "../../app/store";
 import { useSelector } from "react-redux";
-import { Cards } from "@organisms";
 import { EmployeePageTemplate } from "components/templates";
 import { AlertModal } from "@atoms";
 const Home: NextPage = () => {
