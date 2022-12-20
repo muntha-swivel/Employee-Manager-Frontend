@@ -4,12 +4,17 @@ import { fetchEmployees, selectEmployee } from "../../app/store";
 import { useSelector } from "react-redux";
 import { EmployeePageTemplate } from "components/templates";
 import { AlertModal } from "@atoms";
+import { Alert } from "@mui/material";
 const Home: NextPage = () => {
   const content = useSelector(selectEmployee());
-  console.log(content);
+  const { statusFetching, fetchEmployeeMessage } = content;
   // return <AlertModal />;
 
-  return <EmployeePageTemplate employees={content.employees} />;
+  if (statusFetching === "failed") {
+    return <Alert severity="error">{fetchEmployeeMessage}</Alert>;
+  } else if (statusFetching === "success") {
+    return <EmployeePageTemplate employees={content.employees} />;
+  }
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(

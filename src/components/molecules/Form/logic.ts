@@ -6,6 +6,10 @@ const addEmployee = (employee: IEmployee, dispatch: any) => {
   dispatch(addNewEmployee(employee));
 };
 const updateExistingEmployee = (employee: IEmployee, dispatch: any) => {
-  dispatch(updateEmployee(employee));
+  try {
+    dispatch(updateEmployee(employee));
+  } catch (err) {
+    console.log(err);
+  }
 };
 export { addEmployee, updateExistingEmployee };

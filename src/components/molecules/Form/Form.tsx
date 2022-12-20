@@ -5,15 +5,24 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Alert,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { UserSchema } from "validation";
 import { IForm } from "./Form.interface";
 import { addEmployee, updateExistingEmployee } from "./logic";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectEmployee } from "app/store";
 
 const Form = ({ edit, employee }: IForm) => {
   const dispatch = useDispatch();
+  const content = useSelector(selectEmployee());
+  const {
+    statusUpdating,
+    updateEmployeeMessage,
+    statusAdding,
+    addEmployeeMessage,
+  } = content;
   let editForm: boolean = false;
 
   if (edit === true && employee != null && employee != undefined) {
@@ -140,8 +149,23 @@ const Form = ({ edit, employee }: IForm) => {
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Add Employee
       </Button>
+      {statusUpdating === "success" ? (
+        <Alert severity="success">{updateEmployeeMessage}</Alert>
+      ) : statusUpdating === "failed" ? (
+        <Alert severity="error">{updateEmployeeMessage}</Alert>
+      ) : statusAdding === "success" ? (
+        <Alert severity="success">{addEmployeeMessage}</Alert>
+      ) : statusAdding === "failed" ? (
+        <Alert severity="error">{addEmployeeMessage}</Alert>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };
 
 export { Form };
+
+{
+  /* <Alert severity="success">{updateEmployeeMessage}</Alert>; */
+}

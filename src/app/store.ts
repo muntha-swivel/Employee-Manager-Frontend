@@ -1,4 +1,9 @@
-import { configureStore, createSlice, ThunkAction } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  createSlice,
+  ThunkAction,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 import { Action } from "redux";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import {
@@ -10,24 +15,97 @@ import {
 } from "api/services/employee";
 import { IEmployee } from "shared";
 
+const initialState = {
+  employees: [],
+  employee: null,
+  statusFetching: "idle",
+  statusDeleting: "idle",
+  statusUpdating: "idle",
+  statusAdding: "idle",
+  addEmployeeMessage: "",
+  updateEmployeeMessage: "",
+  fetchEmployeeMessage: "",
+  error: "",
+};
+
+export const fetchEmployees = createAsyncThunk(
+  "employee/fetch",
+  async (obj, { rejectWithValue }) => {
+    try {
+      const response = await getEmployeesService();
+      if (response.data.employees) {
+        return response.data.employees;
+      } else {
+        return rejectWithValue("Sorry Something went wrong!");
+      }
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const fetchEmployeeById = createAsyncThunk(
+  "employee/fetchById",
+  async (id: string) => {
+    const res = await getEmployeeByIdService(id);
+    return res.data.employee;
+  }
+);
+
+export const addNewEmployee = createAsyncThunk(
+  "employee/addEmp",
+  async (employee: IEmployee, { rejectWithValue }) => {
+    try {
+      const res = await addEmployeeService(employee);
+      if (res.data.message === "success") {
+        return res.data;
+      } else {
+        return rejectWithValue("error");
+      }
+    } catch (err) {
+      console.log(err);
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const updateEmployee = createAsyncThunk(
+  "employee/updateEmp",
+  async (employee: IEmployee, { rejectWithValue }) => {
+    try {
+      const res = await updateUpdateEmployeeService(employee);
+      if (res.data.message === "success") {
+        return res.data;
+      } else {
+        return rejectWithValue("error");
+      }
+    } catch (err) {
+      console.log(err);
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const setEmployeeToDelete =
+  (employee: IEmployee): AppThunk =>
+  async (dispatch) => {
+    dispatch(employeeSlice.actions.setDelEmployee({ delEmp: employee }));
+  };
+
+export const deleteEmployee = createAsyncThunk(
+  "employee/deleteEmployee",
+  async (id: string) => {
+    const res = await removeEmployeeService(id);
+    return res.data.employees;
+  }
+);
+
 export const employeeSlice = createSlice({
   name: "employee",
 
-  initialState: {} as any,
+  initialState,
 
   reducers: {
-    setEnt(state, action) {
-      return action.payload;
-    },
-    setEmployees(state, action) {
-      return action.payload;
-    },
-    setEmployee(state, action) {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    },
     setDelEmployee(state, action) {
       return {
         ...state,
@@ -36,14 +114,75 @@ export const employeeSlice = createSlice({
     },
   },
 
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
+  extraReducers: (builder) => {
+    //Hydrate state with wrapper
+    builder.addCase(HYDRATE, (state, action: any) => {
+      console.log("HYDRATE", state, action.payload);
       return {
         ...state,
         ...action.payload.employee,
       };
-    },
+    });
+    builder
+      //fethch employee
+      .addCase(fetchEmployees.fulfilled, (state, action) => {
+        state.employees = state.employees.concat(action.payload);
+        state.statusFetching = "success";
+      })
+      .addCase(fetchEmployees.pending, (state, action) => {
+        state.statusFetching = "loading";
+      })
+      .addCase(fetchEmployees.rejected, (state, action) => {
+        state.statusFetching = "failed";
+        state.fetchEmployeeMessage = "Sorry Something went wrong!";
+      })
+      .addCase(fetchEmployeeById.fulfilled, (state, action) => {
+        state.employee = action.payload;
+        state.status = "success";
+      })
+      .addCase(fetchEmployeeById.pending, (state, action) => {
+        state.status = "pending";
+      })
+      .addCase(fetchEmployeeById.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      //add employee
+      .addCase(addNewEmployee.fulfilled, (state, action) => {
+        state.statusAdding = "success";
+        state.addEmployeeMessage = "New employee added successfully!";
+      })
+      .addCase(addNewEmployee.pending, (state, action) => {
+        state.statusAdding = "pending";
+      })
+      .addCase(addNewEmployee.rejected, (state, action) => {
+        state.statusAdding = "failed";
+        state.addEmployeeMessage =
+          "Could not add employee! please try again later.";
+      })
+      //delete employee
+      .addCase(deleteEmployee.fulfilled, (state, action) => {
+        state.employees = action.payload;
+        state.status = "success";
+      })
+      .addCase(deleteEmployee.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteEmployee.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      //update employee
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        state.statusUpdating = "success";
+        state.updateEmployeeMessage = "Update Successfull";
+      })
+      .addCase(updateEmployee.pending, (state, action) => {
+        state.statusUpdating = "loading";
+      })
+      .addCase(updateEmployee.rejected, (state, action) => {
+        state.statusUpdating = "failed";
+        state.updateEmployeeMessage =
+          "Could not update please try again later!";
+      });
   },
 });
 
@@ -63,64 +202,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action
 >;
-
-export const fetchEmployees = (): AppThunk => async (dispatch) => {
-  try {
-    const res = await getEmployeesService();
-    const data = res.data.employees;
-
-    dispatch(employeeSlice.actions.setEmployees({ employees: data }));
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const fetchEmployeeById =
-  (id?: string): AppThunk =>
-  async (dispatch) => {
-    const res = await getEmployeeByIdService(id);
-    const data = res.data.employee;
-
-    dispatch(employeeSlice.actions.setEmployee({ employee: data }));
-  };
-export const addNewEmployee =
-  (employee: IEmployee): AppThunk =>
-  async () => {
-    try {
-      const res = await addEmployeeService(employee);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-export const updateEmployee =
-  (employee: IEmployee): AppThunk =>
-  async () => {
-    try {
-      const res = await updateUpdateEmployeeService(employee);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-export const setEmployeeToDelete =
-  (employee: IEmployee): AppThunk =>
-  async (dispatch) => {
-    dispatch(employeeSlice.actions.setDelEmployee({ delEmp: employee }));
-  };
-
-export const deleteEmployee =
-  (id: string): AppThunk =>
-  async (dispatch) => {
-    try {
-      const res = await removeEmployeeService(id);
-      const data = res.data.employees;
-
-      dispatch(employeeSlice.actions.setEmployees({ employees: data }));
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
 export const wrapper = createWrapper<AppStore>(makeStore);
 
