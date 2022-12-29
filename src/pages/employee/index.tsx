@@ -5,15 +5,17 @@ import { useSelector } from "react-redux";
 import { EmployeePageTemplate } from "components/templates";
 import { AlertModal } from "@atoms";
 import { Alert } from "@mui/material";
-const Home: NextPage = () => {
+
+const HomePage: NextPage = () => {
   const content = useSelector(selectEmployee());
   const { statusFetching, fetchEmployeeMessage } = content;
-  // return <AlertModal />;
 
   if (statusFetching === "failed") {
     return <Alert severity="error">{fetchEmployeeMessage}</Alert>;
   } else if (statusFetching === "success") {
     return <EmployeePageTemplate employees={content.employees} />;
+  } else {
+    return <></>;
   }
 };
 
@@ -32,4 +34,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
       };
     }
 );
-export default Home;
+export default HomePage;

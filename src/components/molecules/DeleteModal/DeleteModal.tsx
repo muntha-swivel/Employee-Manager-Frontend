@@ -10,7 +10,7 @@ const DeleteModal = ({
   return (
     <AlertModal
       mainTitle="Delete Employee"
-      text={`Are you sure you want to delete employee ${employee?.firstName}`}
+      text={`Are you sure you want to delete employee ${employee?.firstName} ?`}
       isOpen={isOpen}
     >
       <>
