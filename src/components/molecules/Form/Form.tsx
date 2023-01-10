@@ -30,12 +30,12 @@ const Form = ({ edit, employee }: IForm) => {
   }
   const formik = useFormik({
     initialValues: {
-      _id: editForm ? employee._id : "",
+      _id: editForm ? employee?._id : "",
       firstName: editForm ? employee?.firstName : "",
-      lastName: editForm ? employee.lastName : "",
-      email: editForm ? employee.email : "",
-      phone: editForm ? employee.phone : "",
-      gender: editForm ? employee.gender : "M",
+      lastName: editForm ? employee?.lastName : "",
+      email: editForm ? employee?.email : "",
+      phone: editForm ? employee?.phone : "",
+      gender: editForm ? employee?.gender : "M",
     },
     validationSchema: UserSchema,
     enableReinitialize: true,
