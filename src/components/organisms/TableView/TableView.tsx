@@ -44,7 +44,7 @@ const TableView = ({ data, onClickDelete }: ITableView) => {
         <TableHead>
           <TableRow hover>
             {tableHeader.map((header) => (
-              <TableCell>{header}</TableCell>
+              <TableCell key={tableHeader.indexOf(header)}>{header}</TableCell>
             ))}
           </TableRow>
         </TableHead>

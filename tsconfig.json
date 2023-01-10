@@ -21,6 +21,6 @@
       "@organisms": ["components/organisms/index"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/__tests__/component.test.js"],
   "exclude": ["node_modules"]
 }
