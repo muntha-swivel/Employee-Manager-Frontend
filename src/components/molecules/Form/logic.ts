@@ -5,7 +5,7 @@ import { addNewEmployee, updateEmployee } from "app/store";
 const addEmployee = (employee: IEmployee, dispatch: any) => {
   dispatch(addNewEmployee(employee));
 };
-const updateExistingEmployee = (employee: IEmployee, dispatch: any) => {
+const updateExistingEmployee = (employee: any, dispatch: any) => {
   try {
     dispatch(updateEmployee(employee));
   } catch (err) {
