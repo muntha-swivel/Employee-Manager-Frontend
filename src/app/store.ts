@@ -48,6 +48,7 @@ export const fetchEmployeeById = createAsyncThunk(
   "employee/fetchById",
   async (id: string) => {
     const res = await getEmployeeByIdService(id);
+    console.log("comming fetch");
     return res.data.employee;
   }
 );
@@ -72,6 +73,7 @@ export const addNewEmployee = createAsyncThunk(
 export const updateEmployee = createAsyncThunk(
   "employee/updateEmp",
   async (employee: IEmployee, { rejectWithValue }) => {
+    console.log("comming here");
     try {
       const res = await updateUpdateEmployeeService(employee);
       if (res.data.message === "success") {
