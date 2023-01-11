@@ -16,7 +16,7 @@ This is the frontend of **Employee Manager** application built using [NextJs](ht
 
 3. ### Setup Environment Variables
 
-- Create a ``.env.local` file and paste the following code inside it. `NEXT_PUBLIC_BASE_URL = http://empmanagerv1-env.eba-ffjxdzba.ap-northeast-1.elasticbeanstalk.com/employee`.
+- Create a `.env.local` file and paste the following code inside it. `NEXT_PUBLIC_BASE_URL = http://empmanagerv1-env.eba-ffjxdzba.ap-northeast-1.elasticbeanstalk.com/employee`.
 
 4. ### Start the Project
 
