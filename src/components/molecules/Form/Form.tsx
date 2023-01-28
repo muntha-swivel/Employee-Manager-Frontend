@@ -147,7 +147,7 @@ const Form = ({ edit, employee }: IForm) => {
       </Select>
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Add Employee
+        {edit ? "Update Employee" : "Add Employee"}
       </Button>
       {statusUpdating === "success" ? (
         <Alert severity="success">{updateEmployeeMessage}</Alert>
