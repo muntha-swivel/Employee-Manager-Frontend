@@ -16,7 +16,7 @@ const theme = createTheme({
       styleOverrides: {
         // Name of the slot
         root: {
-          // Some CSS
+          // Some CS
           borderRadius: "20rem",
         },
       },
