@@ -1,0 +1,11 @@
+{
+  "routes": [
+    {
+      "src": "/insecure-route/(.*)",
+      "dest": "http://insecure-content.com/$1",
+      "headers": {
+        "upgrade-insecure-requests": 1
+      }
+    }
+  ]
+}

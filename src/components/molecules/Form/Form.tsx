@@ -138,7 +138,7 @@ const Form = ({ edit, employee }: IForm) => {
         id="demo-simple-select"
         name="gender"
         value={formik.values.gender}
-        label="Age"
+        label="Gender"
         fullWidth
         onChange={formik.handleChange}
       >
